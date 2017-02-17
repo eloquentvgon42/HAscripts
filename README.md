@@ -1,2 +1,2 @@
 # HAscripts
-things for home assitant
+things for homeassistant
