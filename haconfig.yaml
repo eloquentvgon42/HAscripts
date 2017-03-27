@@ -1,0 +1,131 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 43.4413
+  longitude: -80.4246
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 326
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/Toronto
+
+# Show links to resources in log and frontend
+#introduction:
+# Show the config tab
+config:
+# Enables the frontend
+frontend:
+
+http:
+  # Uncomment this to add a password (recommended!)
+   api_password: XXXXXXX
+  # Uncomment this if you are using SSL or running in Docker etc
+  # base_url: example.duckdns.org:8123
+
+# Checks for available updates
+updater:
+
+# Discover some devices automatically
+#discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time.
+history:
+
+# View all events in a logbook
+logbook:
+
+logger:
+  default: critical
+  logs:
+    homeassistant.components.http: warning
+
+# Track the sun
+sun:
+
+# Weather Prediction
+sensor:
+  - platform: darksky
+    api_key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    monitored_conditions:
+        - icon
+      - temperature
+      - humidity
+      - pressure
+      - precip_probability
+  - platform: command_line
+    name: CPU Temperature
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) }}'
+
+# Text to speech
+tts:
+  platform: google
+
+#light:
+#  platform: piglow
+#######telling HA where ffmpeg is
+ffmpeg:
+   ffmpeg_bin: /usr/bin/avconv
+
+camera:
+  - platform: foscam
+    ip: 192.168.0.184
+    name: camera1
+    username: admin
+    password: p@ssw0rd!!
+  - platform: local_file
+    file_path: /home/homeassistant/.homeassistant/cam/pic.jpg
+    name: doorpic
+weblink:
+  entities:
+    - name: Home Assistant
+      url: https://home-assistant.io
+    - name: Mopidy_LR
+      url: http://192.168.0.135:6680/musicbox_webclient/index.html#nowPlaying
+    - name: Mopidy_Office
+      url: http://192.168.0.158:6680/musicbox_webclient/index.html#nowPlaying
+
+binary_sensor:
+  - platform: command_line
+    command: 'ping -c 1 192.168.0.100 | grep "1 received" | wc -l'
+    name: 'firewall'
+    device_class: connectivity
+    payload_on: 1
+    payload_off: 0
+  - platform: command_line
+    command: 'ping -c 1 192.168.0.254 | grep "1 received" | wc -l'
+    name: 'wifis'
+    device_class: connectivity
+    payload_on: 1
+    payload_off: 0
+  - platform: command_line
+    command: 'ping -c 1 192.168.0.184 | grep "1 received" | wc -l'    name: 'garage cam'
+    device_class: connectivity
+    payload_on: 1
+    payload_off: 0
+  - platform: command_line
+    command: 'ping -c 1 192.168.0.108 | grep "1 received" | wc -l'
+    name: 'garage wifis'
+    device_class: connectivity
+    payload_on: 1
+    payload_off: 0
+  - platform: command_line
+    command: 'ping -c 1 192.168.0.135 | grep "1 received" | wc -l'
+    name: 'mopidy'
+    device_class: connectivity
+    payload_on: 1
+    payload_off: 0
+
+
+panel_iframe:
+  mopidy:
+    icon: mdi:music-note
+    title: 'mopidyLR'
+    url: 'http://192.168.0.135:6680/musicbox_webclient/index.html#nowPlaying'
+                                                                                                                                                                                              
