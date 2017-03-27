@@ -78,7 +78,7 @@ camera:
     ip: 192.168.0.184
     name: camera1
     username: admin
-    password: p@ssw0rd!!
+    password: XXXXXXXXXXX
   - platform: local_file
     file_path: /home/homeassistant/.homeassistant/cam/pic.jpg
     name: doorpic
